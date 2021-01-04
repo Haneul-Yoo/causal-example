@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block body %}
+<div id=instruction-view>
+    <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <div class="navbar-item">
+                Argument Generation Study - Causal Transformation Annotation
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="content v-large-padded">
+            <h4>Annotation Manual</h4>
+            Please read the instruction file carefully. <br />
+            We encourage you to download this instruction file for the following task.
+            <object id="pdf" data="/static/causal-example-manual.pdf" type="application/pdf">
+                <p>
+                    Uh oh, there might be a little problem with loading instruction.
+                    You can <a href="/static/causal-example-manual.pdf">click here to download the PDF file.</a>
+                </p>
+            </object>
+            <hr />
+            <h4>Worker Id</h4>
+            <form action="/tasks/draw" method="GET" onsubmit="return isBlank(); return false;" name="form">
+            <!-- <form action="/tasks/draw" method="GET" onsubmit="return isBlank()"> -->
+                If you agree to participate in this study, please enter your  
+                <input 
+                    v-model="workerId"
+                    v-autowidth="{maxWidth: '960px', minWidth: '20px', comfortZone: 0}"
+                    placeholder="Worker ID"
+                    name="workerId"
+                />
+                as honor code. <br />
+                You can generally find your Worker ID on your Dashboard or in the upper left corner of the Worker website.
+                <p></p>
+                <input type="submit" value="Start" class="button is-success"/>
+            </form>
+        </div>
+        <!-- <div class="content v-padded">
+            <div class="buttons">
+                <a href="/tasks/draw" class="button is-success" @click="start">Start</a>
+            </div>
+        </div> -->
+    </div>    
+</div>
+<style>
+    #pdf{
+        width: 100%;
+        height: 100vh;
+    }
+</style>
+<script>
+    function isBlank() {
+        wid = document.forms["form"]["workerId"].value;
+        if (wid === "") {
+            alert('You have to write down your worker ID.');
+            return false;
+        }
+    }
+
+    var app = new Vue({
+        el: '#instruction-view',
+        delimiters: ['[[', ']]'],
+        data: {
+            workerId: '',
+        },
+    })
+</script>
+{% endblock %}

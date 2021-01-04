@@ -1,0 +1,12 @@
+[
+    {
+        "id": "example",
+        "text": "Given the context, the statement is ?",
+        "option": {
+            "0": "Definitely Correct",
+            "1": "Definitely Wrong",
+            "2": "Neither Definitely Correct nor Definitely Wrong",
+            "3": "Broken"
+        }
+    }
+]
