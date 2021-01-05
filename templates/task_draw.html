@@ -56,7 +56,7 @@
                                 <!-- <p>
                                     [[ question.text ]]
                                 </p> -->
-                                <div class="buttons has-addons is-left">
+                                <div class="buttons is-left">
                                     <!-- <span class="button is-static">
                                         [[ question.mintext ]]
                                     </span> -->
@@ -65,12 +65,13 @@
                                         @click="selectValidateValue(contextIndex, v, v === validateTexts[validateIndexes.indexOf(contextIndex)].value)">
                                         [[ v ]]
                                     </button> -->
-                                    <button v-for="v in Object.keys(question.option)" :key="v" class="button"
+                                    <button v-for="v in Object.keys(question.option)" :key="v" class="button is-fullwidth"
                                         :class="{ 'is-black': isValue(v) }"
                                         @click="selectValue(v)">
                                         <!-- [[ v ]] -->
                                         [[ question.option[v+''] ]]
                                     </button>
+                                    <br />
                                     <!-- <span class="button is-static">
                                         [[ question.maxtext ]]
                                     </span> -->
