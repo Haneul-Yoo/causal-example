@@ -10,7 +10,7 @@ data_path = './data'
 output_path = './output'
 context_count_per_user = 5
 user_count_per_context = 3
-secret_code = 'first_round_trans_'
+secret_code = 'pilot_example_'
 
 
 def init_paths():
@@ -212,4 +212,5 @@ def task_done():
 
 init_paths()
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    port = int(os.environ.get("PORT", 5000")
+    app.run(debug=True, host='0.0.0.0', port=port)
