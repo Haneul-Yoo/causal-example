@@ -4,6 +4,10 @@ import json
 import os
 import glob
 
+train = {'mnli_synthetic_examples_v4_scores_v3_final_test':'train', 'anli_synthetic_examples_v4_scores_v3_final':'train'}
+val = {'anli_synthetic_examples_v4_scores_v3_final':'val', 'snli_synthetic_examples_v4_scores_v3_final':'val', 'fnli_synthetic_examples_v4_scores_v3_final':'val'}
+test = {'mnli_synthetic_examples_v4_scores_v3_final_test':'test', 'mnli_mm_synthetic_examples_v4_scores_v3_final':'test', 'anli_synthetic_examples_v4_scores_v3_final':'test', 'snli_synthetic_examples_v4_scores_v3_final':'test', 'snli_hard_synthetic_examples_v4_scores_v3_final':'test', 'fnli_synthetic_examples_v4_scores_v3_final':'test'}
+
 def conv(filename):
     with open('./data/%s.csv' % filename, 'r', encoding='UTF-8') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -51,30 +55,47 @@ def read_top_n(filename, n):
 def isSplit(path, split):
     with open(path, 'r', encoding='UTF-8') as f:
         reader = csv.DictReader(f)
-        sample = next(reader)
-        if sample['split'] == split:
-            # print(sample)
-            return sample
+        # for sample in reader:
+        #     if sample['split'] == split:
+        #         return sample
+        samples = []
+        for sample in reader:
+            if sample['split'] == split:
+                samples.append(sample)
+        random.shuffle(samples)
+        return samples[0:2]
 
-def search_all_file(path, split, n):
-    all_files = glob.glob(path+'**/*.csv', recursive=True)
+def namestr(obj, namespace):
+    return [name for name in namespace if namespace[name] is obj][0]
+
+def search_all_file(path, pair, n):
+    all_files = []
+    for data in pair.keys():
+        all_files.extend(glob.glob(path+data+'/*.csv', recursive=True))
     random.shuffle(all_files)
+    # print(all_files[:10])
     sampled_n = [['id','split','text1','text2','label','property','hop']]
     for f in all_files:
         if len(sampled_n) > n:
             break
+        split = pair[f.split('/')[-2]]
         if isSplit(f, split):
-            sampled_n.append(isSplit(f, split).values())
-    with open('./data/sampled_%d_of_snli_hard.csv' %n, 'w', newline='', encoding='UTF-8') as f:
+            # sampled_n.append(isSplit(f, split).values())
+            sampled_n.append(isSplit(f, split)[0].values())
+            if len(isSplit(f, split)) > 1:
+                sampled_n.append(isSplit(f, split)[1].values())
+            print('%d / %d' %(len(sampled_n), n))
+    with open('./data/sampled_%d_of_%s.csv' % (n, namestr(pair,globals())), 'w', newline='', encoding='UTF-8') as f:
         writer = csv.writer(f)
         writer.writerows(sampled_n)
-
 
 def main():
     # read_top_n('annot-effect-pair', 10) 
     # conv(read_top_n('annot-effect-pair', 1000))
-    search_all_file('../../dialog-annotator-web-master/example-data/snli_hard_synthetic_examples_v4_scores_v3_final/', 'test', 100)
-    conv('sampled_100_of_snli_hard')
+    # search_all_file('../data/', train, 1000)
+    # search_all_file('../data/', val, 1000)
+    search_all_file('../data/', test, 8000)
+    # conv('sampled_100_of_all_files')
 
 if __name__ == "__main__":
     main()
