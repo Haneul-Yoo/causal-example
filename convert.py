@@ -65,7 +65,7 @@ def search_all_file(path, split, n):
             break
         if isSplit(f, split):
             sampled_n.append(isSplit(f, split).values())
-    with open('./data/sampled_%d_of_all_files.csv' %n, 'w', newline='', encoding='UTF-8') as f:
+    with open('./data/sampled_%d_of_snli_hard.csv' %n, 'w', newline='', encoding='UTF-8') as f:
         writer = csv.writer(f)
         writer.writerows(sampled_n)
 
@@ -73,8 +73,8 @@ def search_all_file(path, split, n):
 def main():
     # read_top_n('annot-effect-pair', 10) 
     # conv(read_top_n('annot-effect-pair', 1000))
-    # search_all_file('../data/', 'test', 100)
-    conv('sampled_100_of_all_files')
+    search_all_file('../../dialog-annotator-web-master/example-data/snli_hard_synthetic_examples_v4_scores_v3_final/', 'test', 100)
+    conv('sampled_100_of_snli_hard')
 
 if __name__ == "__main__":
     main()
