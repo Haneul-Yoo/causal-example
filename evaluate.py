@@ -58,13 +58,13 @@ def manage_turker(filename, answercode):
     for _,mturk in mturks.items():
         if (mturk['Answer.surveycode'].startswith(answercode)):
             for uid in evaluates:
-                if uid == mturk['Answer.surveycode'][18:]:
+                if uid == mturk['Answer.surveycode'][8:]:
                     if evaluates[uid]['valid'] == False:
                         mturks[answercode+uid]['Reject'] = 'You failed in a validation question.'
                     else:
                         mturks[answercode+uid]['Approve'] = 'x'
 
-    with open('./output/%s_evaluated.csv' % filename, 'w', encoding='UTF-8') as f:
+    with open('./output/%s_evaluated.csv' % filename, 'w', encoding='UTF-8', newline='') as f:
         lcount = 0
         for _, m in mturks.items():
             w = csv.DictWriter(f, m.keys())
@@ -75,8 +75,8 @@ def manage_turker(filename, answercode):
 
 def main():
     evaluate()
-    conv('evaluate_response_pilot')
-    # manage_turker('Batch_4294402_batch_results', 'example_')
+    conv('evaluate_response')
+    # manage_turker('Batch_4307245_batch_results', 'example_')
 
 if __name__ == '__main__':
     main()

@@ -1,9 +1,10 @@
 import csv
 import json
 import os
-from statistics import multimode
+# from statistics import multimode
+from statistics import mode, StatisticsError
 
-response_path = './output/response 2'
+response_path = './output/response'
 labels = {'ent':0, 'con':1, 'neu':2, 'brk':3, 'hid':-1}
 responses = {}
 evaluates = {}
@@ -40,7 +41,19 @@ def evaluate():
         evaluates[qid]['res1'] = int(responses[qid][1]['strength']) if len(responses[qid]) > 1 else None
         evaluates[qid]['res2'] = int(responses[qid][2]['strength']) if len(responses[qid]) > 2 else None
         res = [evaluates[qid]['res0'],evaluates[qid]['res1'],evaluates[qid]['res2']]
-        evaluates[qid]['majority'] = multimode(res)[0] if len(multimode(res)) == 1 else None
+        # evaluates[qid]['majority'] = multimode(res)[0] if len(multimode(res)) == 1 else None
+        try:
+            evaluates[qid]['majority'] = mode(res)
+        except StatisticsError:
+            evaluates[qid]['majority'] = None
+
+        if evaluates[qid]['majority'] is not None:
+            if evaluates[qid]['label'] == evaluates[qid]['majority']:
+                evaluates[qid]['result'] = 'same'
+            else:
+                evaluates[qid]['result'] = str(evaluates[qid]['label'])+'->'+str(evaluates[qid]['majority'])
+        else:
+            evaluates[qid]['result'] = 'no majority'
 
 def conv(filename):
     with open('./output/%s_evaluated.csv' % filename, 'w', newline='', encoding='UTF-8') as f:
@@ -54,7 +67,7 @@ def conv(filename):
 
 def main():
     evaluate()
-    conv('response-20210111T042937Z-001')
+    conv('response-valid')
 
 if __name__ == '__main__':
     main()

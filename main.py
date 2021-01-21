@@ -47,9 +47,9 @@ def get_context_response_count_dict():
     for filename in response_filenames:
         if '__res__' not in filename:
             continue
-        if filename.startswith('valid_'):
-            split_filename = filename.split('__res__')[0].split('valid_')
-            if len(split_filename) != 2 or not split_filename[1].endswith('.json'):
+        if filename.startswith('valid__') and filename.endswith('.json'):
+            split_filename = filename.split('__res__')[0].split('valid__')
+            if len(split_filename) != 2:
                 continue
             context_id = split_filename[1]
             counter[context_id] += 1
@@ -61,13 +61,16 @@ def draw_context_ids():
     context_ids = []
     while len(context_ids) < context_count_per_user:
         # Draw a context that currently has minimum number of responses.
-        valid_counts = [count for cid, count in count_dict.items() if cid not in context_ids]
-        if not valid_counts:
+        # valid_counts = [count for cid, count in count_dict.items() if cid not in context_ids]
+        # if not valid_counts:
+        #     break
+        # min_count = min(valid_counts)
+        # draw_box = [cid for cid, count in count_dict.items() if (count == min_count) and (cid not in context_ids)]
+        # context_ids.append(random.choice(draw_box))
+        draw_box = [cid for cid, count in count_dict.items() if (count < user_count_per_context) and (cid not in context_ids)]
+        if len(draw_box) == 0:
             break
-        min_count = min(valid_counts)
-        draw_box = [cid for cid, count in count_dict.items() if (count == min_count) and (cid not in context_ids)]
-        context_ids.append(random.choice(draw_box))
-
+        context_ids.append(draw_box[0])
     return context_ids
 
 
