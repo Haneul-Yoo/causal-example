@@ -4,7 +4,7 @@ import json
 import os
 import glob
 
-train = {'mnli_synthetic_examples_v4_scores_v3_final_test':'train', 'anli_synthetic_examples_v4_scores_v3_final':'train'}
+train = {'mnli_synthetic_examples_v4_scores_v3_final':'train', 'anli_synthetic_examples_v4_scores_v3_final':'train'}
 val = {'anli_synthetic_examples_v4_scores_v3_final':'val', 'snli_synthetic_examples_v4_scores_v3_final':'val', 'fnli_synthetic_examples_v4_scores_v3_final':'val'}
 test = {'mnli_synthetic_examples_v4_scores_v3_final_test':'test', 'mnli_mm_synthetic_examples_v4_scores_v3_final':'test', 'anli_synthetic_examples_v4_scores_v3_final':'test', 'snli_synthetic_examples_v4_scores_v3_final':'test', 'snli_hard_synthetic_examples_v4_scores_v3_final':'test', 'fnli_synthetic_examples_v4_scores_v3_final':'test'}
 
@@ -58,12 +58,19 @@ def isSplit(path, split):
         # for sample in reader:
         #     if sample['split'] == split:
         #         return sample
-        samples = []
+
+        # samples = []
+        # for sample in reader:
+        #     if sample['split'] == split:
+        #         samples.append(sample)
+        # random.shuffle(samples)
+        # return samples[0:2]
+        cnt = 0
         for sample in reader:
             if sample['split'] == split:
-                samples.append(sample)
-        random.shuffle(samples)
-        return samples[0:2]
+                cnt += 1
+                if cnt == 2:
+                    return sample
 
 def namestr(obj, namespace):
     return [name for name in namespace if namespace[name] is obj][0]
@@ -80,10 +87,10 @@ def search_all_file(path, pair, n):
             break
         split = pair[f.split('/')[-2]]
         if isSplit(f, split):
-            # sampled_n.append(isSplit(f, split).values())
-            sampled_n.append(isSplit(f, split)[0].values())
-            if len(isSplit(f, split)) > 1:
-                sampled_n.append(isSplit(f, split)[1].values())
+            sampled_n.append(isSplit(f, split).values())
+            # sampled_n.append(isSplit(f, split)[0].values())
+            # if len(isSplit(f, split)) > 1:
+            #     sampled_n.append(isSplit(f, split)[1].values())
             print('%d / %d' %(len(sampled_n), n))
     with open('./data/sampled_%d_of_%s.csv' % (n, namestr(pair,globals())), 'w', newline='', encoding='UTF-8') as f:
         writer = csv.writer(f)
@@ -92,9 +99,9 @@ def search_all_file(path, pair, n):
 def main():
     # read_top_n('annot-effect-pair', 10) 
     # conv(read_top_n('annot-effect-pair', 1000))
-    # search_all_file('../data/', train, 1000)
+    search_all_file('../data/', train, 500)
     # search_all_file('../data/', val, 1000)
-    search_all_file('../data/', test, 8000)
+    # search_all_file('../data/', test, 4000)
     # conv('sampled_100_of_all_files')
 
 if __name__ == "__main__":
