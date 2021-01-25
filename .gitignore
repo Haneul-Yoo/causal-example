@@ -1,5 +1,11 @@
+.DS_store
+
 # Input data
+data/
 data/*.csv
+data/train/
+data/val/
+data/test/
 
 # Output data
 output/

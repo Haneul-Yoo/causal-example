@@ -132,6 +132,7 @@
             uid: this.__uid__,
             contexts: this.__contexts__,
             questions: this.__questions__,
+            // context_count_per_user: this.__context_count_per_user__,
             // validateTexts: this.__validate_texts__,
             contextIndex: loadValue('contextIndex') || 0,
             response: loadValue('response') || {},
@@ -139,7 +140,7 @@
             validateIndexes: [],
             // message: loadValue('message') || {},
             workerId: window.location.search.split("=")[1],
-            validateContext: Math.floor(Math.random() * 4)+1,
+            validateContext: Math.floor(Math.random() * 4) + 1,
             validateValue: Math.floor(Math.random() * 4),
         },
         created() {
