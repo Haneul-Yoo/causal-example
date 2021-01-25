@@ -56,8 +56,19 @@ def get_context_response_count_dict():
     return counter
 
 
-def draw_context_ids():
+def get_response_by_wid(wid):
+    response_filenames = os.listdir('%s/response/' % output_path)
+    response_by_wid = []
+    for filename in response_filenames:
+        if filename.endswith('.json'):
+            if filename.split('__')[3] == wid:
+                response_by_wid.append(filename.split('__')[1])
+    return response_by_wid
+
+
+def draw_context_ids(wid):
     count_dict = get_context_response_count_dict()
+    context_wids = get_response_by_wid(wid)
     context_ids = []
     while len(context_ids) < context_count_per_user:
         # Draw a context that currently has minimum number of responses.
@@ -67,7 +78,8 @@ def draw_context_ids():
         # min_count = min(valid_counts)
         # draw_box = [cid for cid, count in count_dict.items() if (count == min_count) and (cid not in context_ids)]
         # context_ids.append(random.choice(draw_box))
-        draw_box = [cid for cid, count in count_dict.items() if (count < user_count_per_context) and (cid not in context_ids)]
+        # draw_box = [cid for cid, count in count_dict.items() if (count < user_count_per_context) and (cid not in context_ids)]
+        draw_box = [cid for cid, count in count_dict.items() if (count < user_count_per_context) and (cid not in context_ids) and (cid not in context_wids)]
         if len(draw_box) == 0:
             break
         context_ids.append(draw_box[0])
@@ -95,8 +107,8 @@ def get_validate_texts():
     return validate_texts
 
 
-def draw_context_dicts():
-    context_ids = draw_context_ids()
+def draw_context_dicts(wid):
+    context_ids = draw_context_ids(wid)
     return [get_context_dict(cid) for cid in context_ids]
 
 
@@ -142,7 +154,8 @@ def task_instruction():
 @app.route('/tasks/draw')
 def task_draw():
     uid = generate_user_id()
-    context_dicts = draw_context_dicts()
+    wid = request.args['workerId']
+    context_dicts = draw_context_dicts(wid)
     questions = get_questions()
     # validate_texts = get_validate_texts()
     return render_template(

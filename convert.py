@@ -9,7 +9,7 @@ val = {'anli_synthetic_examples_v4_scores_v3_final':'val', 'snli_synthetic_examp
 test = {'mnli_synthetic_examples_v4_scores_v3_final_test':'test', 'mnli_mm_synthetic_examples_v4_scores_v3_final':'test', 'anli_synthetic_examples_v4_scores_v3_final':'test', 'snli_synthetic_examples_v4_scores_v3_final':'test', 'snli_hard_synthetic_examples_v4_scores_v3_final':'test', 'fnli_synthetic_examples_v4_scores_v3_final':'test'}
 
 def conv(filename):
-    with open('./data/%s.csv' % filename, 'r', encoding='UTF-8') as csvfile:
+    with open('./data/csv/%s.csv' % filename, 'r', encoding='UTF-8') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             book = {
@@ -103,6 +103,8 @@ def main():
     # search_all_file('../data/', val, 1000)
     # search_all_file('../data/', test, 8000)
     conv('sampled_1000_of_train(all)')
+    conv('sampled_1000_of_val')
+    conv('sampled_8000_of_test')
 
 if __name__ == "__main__":
     main()
