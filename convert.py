@@ -18,7 +18,7 @@ def conv(filename):
                 'statement': row['text2'],
                 'label': row['label']
             }
-            with open('./data/contexts/%s.json' % book['id'], 'w') as f:
+            with open('./data/train/%s.json' % book['id'], 'w') as f:
                 json.dump(book, f, sort_keys=True, indent=4)
 
 def read_top_n(filename, n):
@@ -94,8 +94,8 @@ def main():
     # conv(read_top_n('annot-effect-pair', 1000))
     # search_all_file('../data/', train, 1000)
     # search_all_file('../data/', val, 1000)
-    search_all_file('../data/', test, 8000)
-    # conv('sampled_100_of_all_files')
+    # search_all_file('../data/', test, 8000)
+    conv('sampled_1000_of_train(all)')
 
 if __name__ == "__main__":
     main()

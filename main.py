@@ -8,7 +8,7 @@ from flask import Flask, redirect, request, render_template
 app = Flask(__name__)
 data_path = './data'
 output_path = './output'
-context_count_per_user = 9
+context_count_per_user = 11
 user_count_per_context = 3
 secret_code = 'example_'
 
@@ -116,11 +116,11 @@ def generate_user_id():
     return uid
 
 
-def save_response(res_output_path, id, user_id, result, isPassed):
+def save_response(res_output_path, id, worker_id, user_id, result, isPassed):
     if isPassed:
-        file_path = '%s/valid__%s__res__%s.json' % (res_output_path, id, user_id)
+        file_path = '%s/valid__%s__res__%s__%s.json' % (res_output_path, id, worker_id, user_id)
     else:
-        file_path = '%s/invalid__%s__res__%s.json' % (res_output_path, id, user_id)
+        file_path = '%s/invalid__%s__res__%s__%s.json' % (res_output_path, id, worker_id, user_id)
     with open(file_path, 'w') as f:
         f.write(json.dumps(result, sort_keys=True, indent=4))
 
@@ -178,7 +178,7 @@ def task_submit():
         res_output_path = output_path + "/no_response/"
         result = dict(context="", statement="", qid = "", uid=user_id, strength=-1, wid=worker_id, timestamp=timestamp)
         # save_response(res_output_path, "attention", user_id, validatorValues, isPassed)
-        save_response(res_output_path, "attention", user_id, result, isPassed)
+        save_response(res_output_path, "attention", worker_id, user_id, result, isPassed)
 
     # for context_id, value in response.items():
     #     save_response(res_output_path, context_id, user_id, value, isPassed)
@@ -203,7 +203,7 @@ def task_submit():
 
         result = dict(context=context, statement=statement, label=label,
             qid = qid, uid=user_id, strength=value, wid=worker_id, isValid=isValid, validator=validator, timestamp=timestamp)
-        save_response(res_output_path, qid, worker_id, result, isValid)
+        save_response(res_output_path, qid, worker_id, user_id, result, isValid)
 
     return 'done:%s' % (secret_code + user_id)
 
