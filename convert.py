@@ -18,7 +18,7 @@ def conv(filename):
                 'statement': row['text2'],
                 'label': row['label']
             }
-            with open('./data/train/%s.json' % book['id'], 'w') as f:
+            with open('./data/contexts/%s.json' % book['id'], 'w') as f:
                 json.dump(book, f, sort_keys=True, indent=4)
 
 def read_top_n(filename, n):
