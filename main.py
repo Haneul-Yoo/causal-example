@@ -72,18 +72,18 @@ def draw_context_ids(wid):
     context_ids = []
     while len(context_ids) < context_count_per_user:
         # Draw a context that currently has minimum number of responses.
-        valid_counts = [count for cid, count in count_dict.items() if cid not in context_ids]
-        if not valid_counts:
-            break
-        min_count = min(valid_counts)
-        draw_box = [cid for cid, count in count_dict.items() if (count == min_count) and (cid not in context_ids)]
-        context_ids.append(random.choice(draw_box))
-        draw_box = [cid for cid, count in count_dict.items() if (count < user_count_per_context) and (cid not in context_ids) and (cid not in context_wids)]
-        context_ids.append(random.choice(draw_box))
-        # draw_box = [cid for cid, count in count_dict.items() if (count < user_count_per_context) and (cid not in context_ids) and (cid not in context_wids)]
-        # if len(draw_box) == 0:
+        # valid_counts = [count for cid, count in count_dict.items() if cid not in context_ids]
+        # if not valid_counts:
         #     break
-        # context_ids.append(draw_box[0])
+        # min_count = min(valid_counts)
+        # draw_box = [cid for cid, count in count_dict.items() if (count == min_count) and (cid not in context_ids)]
+        # context_ids.append(random.choice(draw_box))
+        # draw_box = [cid for cid, count in count_dict.items() if (count < user_count_per_context) and (cid not in context_ids) and (cid not in context_wids)]
+        # context_ids.append(random.choice(draw_box))
+        draw_box = [cid for cid, count in count_dict.items() if (count < user_count_per_context) and (cid not in context_ids) and (cid not in context_wids)]
+        if len(draw_box) == 0:
+            break
+        context_ids.append(draw_box[0])
     return context_ids
 
 
