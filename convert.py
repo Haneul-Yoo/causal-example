@@ -6,7 +6,7 @@ import glob
 
 train = {'mnli_synthetic_examples_v4_scores_v3_final':'train', 'anli_synthetic_examples_v4_scores_v3_final':'train'}
 val = {'anli_synthetic_examples_v4_scores_v3_final':'val', 'snli_synthetic_examples_v4_scores_v3_final':'val', 'fnli_synthetic_examples_v4_scores_v3_final':'val'}
-# test = {'mnli_synthetic_examples_v4_scores_v3_final_test':'val', 'mnli_mm_synthetic_examples_v4_scores_v3_final':'val', 'anli_synthetic_examples_v4_scores_v3_final':'test', 'snli_synthetic_examples_v4_scores_v3_final':'test', 'snli_hard_synthetic_examples_v4_scores_v3_final':'test', 'fnli_synthetic_examples_v4_scores_v3_final':'test'}
+test = {'mnli_synthetic_examples_v4_scores_v3_final_test':'val', 'mnli_mm_synthetic_examples_v4_scores_v3_final':'val', 'anli_synthetic_examples_v4_scores_v3_final':'test', 'snli_synthetic_examples_v4_scores_v3_final':'test', 'snli_hard_synthetic_examples_v4_scores_v3_final':'test', 'fnli_synthetic_examples_v4_scores_v3_final':'test'}
 
 def conv(filename):
     with open('./data/csv/%s.csv' % filename, 'r', encoding='UTF-8') as csvfile:
@@ -101,11 +101,12 @@ def main():
     # conv(read_top_n('annot-effect-pair', 1000))
     # search_all_file('../data/', train, 500)
     # search_all_file('../data/', val, 1000)
-    # search_all_file('../data/', test, 458)
+    # search_all_file('../data/', test, 2584)
     # conv('sampled_1000_of_train(all)')
     # conv('sampled_1000_of_val')
     # conv('sampled_8000_of_test')
-    conv('sampled_458_of_mnlimm')
+    # conv('sampled_2584_of_mnli')
+    conv('sampled_1246_of_mnli')
 
 if __name__ == "__main__":
     main()
