@@ -187,13 +187,15 @@ def task_submit():
     isValid = (validator['intend'] == validator['answer'])
     # validatorValues = data['validatorValues']
     
-    if isPassed:
-        res_output_path = output_path + "/response/"
-    else:
-        res_output_path = output_path + "/no_response/"
-        result = dict(context="", statement="", qid = "", uid=user_id, strength=-1, wid=worker_id, timestamp=timestamp)
-        # save_response(res_output_path, "attention", user_id, validatorValues, isPassed)
-        save_response(res_output_path, "attention", worker_id, user_id, result, isPassed)
+    # if isPassed:
+    #     res_output_path = output_path + "/response/"
+    # else:
+    #     res_output_path = output_path + "/no_response/"
+    #     result = dict(context="", statement="", qid = "", uid=user_id, strength=-1, wid=worker_id, timestamp=timestamp)
+    #     # save_response(res_output_path, "attention", user_id, validatorValues, isPassed)
+    #     save_response(res_output_path, "attention", worker_id, user_id, result, isPassed)
+
+    res_output_path = output_path+'/response/'
 
     # for context_id, value in response.items():
     #     save_response(res_output_path, context_id, user_id, value, isPassed)
@@ -225,8 +227,9 @@ def task_submit():
 
 @app.route('/tasks/done')
 def task_done():
+    isValid = request.args.get('isValid')
     code = request.args.get('code')
-    return render_template('task_done.html', code=code)
+    return render_template('task_done.html', isValid=isValid, code=code)
 
 
 init_paths()

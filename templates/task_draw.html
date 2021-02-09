@@ -253,7 +253,7 @@
                         isValid = false;
                     }
                 })
-                
+                isPassed = this.response[this.contexts[this.validateContext].id] == this.validateValue ? true : false;
                 // this.contexts.forEach(context => {
                 //     if (!this.message[context.id]) {
                 //         isValid = false;
@@ -273,11 +273,11 @@
                     alert('You have to answer to all questions.');
                     return;
                 }
-                if (!isPassed) {
-                    // Failed to pass the validity check.
-                   window.location.href = '/tasks/done?code=' + encodeURI('pass_no_132v82389a823l3133id112');
-                   return;
-                }
+                // if (!isPassed) {
+                //     // Failed to pass the validity check.
+                //    window.location.href = '/tasks/done?code=' + encodeURI('pass_no_132v82389a823l3133id112');
+                //    return;
+                // }
                 // Submit with AJAX call.
                 axios.post('/tasks/submit', {
                     response: this.response,
@@ -297,11 +297,12 @@
                     if (succeed) {
                         const code = data.split(':')[1];
                         //window.location.href = '/tasks/done?code=' + encodeURI(code);
-                        if (isPassed) {
-                            window.location.href = '/tasks/done?code=' + encodeURI(code);
-                        } else {
-                            window.location.href = '/tasks/done?code=pass_' + encodeURI(code);
-                        }
+                        window.location.href = '/tasks/done?' + 'isValid=' + encodeURI(isPassed) + '&code=' + encodeURI(code);
+                        // if (isPassed) {
+                        //     window.location.href = '/tasks/done?code=' + encodeURI(code);
+                        // } else {
+                        //     window.location.href = '/tasks/done?code=pass_' + encodeURI(code);
+                        // }
                         this.resetValues();
                     } else {
                         alert('Error from server on submit: ' + response);
